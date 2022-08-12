@@ -1,0 +1,2 @@
+	_primaryWeapon = ["LMG_03_F","arifle_CTARS_blk_F","arifle_CTARS_ghex_F","arifle_CTARS_hex_F","arifle_RPK12_arid_F","arifle_RPK12_F","arifle_RPK12_lush_F","arifle_SPAR_02_blk_F","arifle_SPAR_02_khk_F","arifle_SPAR_02_snd_F","LMG_03_Vehicle_F","LMG_Mk200_black_F","LMG_Mk200_F","LMG_Zafir_F","MMG_01_hex_ARCO_LP_F","MMG_01_hex_F","MMG_01_tan_F","MMG_02_black_F","MMG_02_black_RCO_BI_F","MMG_02_camo_F","MMG_02_sand_F","MMG_02_sand_RCO_LP_F"]; 
+	_muzzles = [];

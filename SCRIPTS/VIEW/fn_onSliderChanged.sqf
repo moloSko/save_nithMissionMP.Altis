@@ -1,0 +1,3 @@
+#include "defines.h"
+
+private "_varData"; params [["_mode",-1,[0]],["_value",-1,[0]]];  if(EQUAL(_mode,-1) OR EQUAL(_value,-1)) exitWith {};  disableSerialization;  _varData = switch(_mode) do { case 0: {["view_foot",INFANTRY_EDIT]}; case 1: {["view_car",GROUND_EDIT]}; case 2: {["view_air",AIR_EDIT]}; case 3: {["view_object",OBJECT_EDIT]}; case 4: {["view_drone",DRONE_EDIT]}; };  SVAR_MNS [SEL(_varData,0),round(_value)]; ctrlSetText[SEL(_varData,1),str(GVAR_MNS SEL(_varData,0))]; [] call VIEW_fnc_updateViewDistance;  if(EQUAL(_mode,3)) then { setObjectViewDistance [view_object,100]; };  if(view_syncObject) then { sliderSetPosition[OBJECT_SLIDER, view_object]; ctrlSetText[OBJECT_EDIT,str(view_object)]; };

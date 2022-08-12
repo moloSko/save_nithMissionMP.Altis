@@ -1,0 +1,4 @@
+	_backpack = _backpack + ["O_AA_01_weapon_F","O_AT_01_weapon_F","O_GMG_01_high_weapon_F","O_GMG_01_weapon_F","O_HMG_01_A_weapon_F","O_HMG_01_high_weapon_F","O_HMG_01_support_F","O_HMG_01_support_high_F","O_HMG_01_weapon_F","O_Mortar_01_support_F","O_Mortar_01_weapon_F","O_UAV_01_backpack_F","O_UAV_06_backpack_F","O_UGV_02_Demining_backpack_F","O_UGV_02_Science_backpack_F"]; 
+	_items = _items + ["ToolKit","O_UavTerminal"]; 
+	_magazines = _magazines + ["APERSBoundingMine_Range_Mag","APERSMine_Range_Mag","APERSMineDispenser_Mag","APERSTripMine_Wire_Mag","ATMine_Range_Mag","ClaymoreDirectionalMine_Remote_Mag","DemoCharge_Remote_Mag","IEDLandBig_Remote_Mag","IEDLandSmall_Remote_Mag","IEDUrbanBig_Remote_Mag","IEDUrbanSmall_Remote_Mag","SatchelCharge_Remote_Mag","SLAMDirectionalMine_Wire_Mag","TrainingMine_Mag"];
+	

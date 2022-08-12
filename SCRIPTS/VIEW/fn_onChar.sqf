@@ -1,0 +1,3 @@
+#include "defines.h"
+
+private["_value","_varName","_maxRange"]; params ["_control","_code","_slider"];  disableSerialization; if(isNull _control) exitWith {}; _maxRange = if(!isNil "view_maxRange") then {view_maxRange} else {5000}; _value = parseNumber (ctrlText _control); if(_value > _maxRange OR _value < 100) exitwith {[] call VIEW_fnc_openMenu;};  _varName = switch (_slider) do { case "ground": {"view_foot"}; case "vehicle": {"view_car"}; case "air": {"view_air"}; case "object": {"view_object"}; case "drone": {"view_drone"}; default {"view_foot"}; };  SVAR_MNS [_varName,_value]; [] call VIEW_fnc_updateViewDistance; [] call VIEW_fnc_openMenu;
