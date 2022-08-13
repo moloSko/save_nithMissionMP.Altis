@@ -300,17 +300,33 @@
 		};
 		case "Respawn" : {
 			private _veh = _params param [0, objNull];
-			
+			private _vName = vehicleVarName _veh;
+			private _vDir = getDir _veh; 
+			private _vType = typeOf _veh; 
+			private _vPylon = GetPylonMagazines _veh;
+			private _vAnim = animationNames _veh;
+			private _cond = false;
+			private _vPos = getPos _veh;
+			_arr = [];
+			{
+				if (_veh == _x # 0) then {_cond = true; _arr = BASE_VEH_POS # _forEachIndex};
+			} forEach BASE_VEH_POS;
+			if (_cond) then {
+				// params [_veh, _pos, _rot, _vPylon, _vName, _vAnim, _vType]
+				_veh = _arr # 0;
+				_vPos = _arr # 1;
+				_vDir = _arr # 2;
+				_vPylon = _arr # 3;
+				_vName = _arr # 4;
+				_vAnim = _arr # 5;
+				_vType = _arr # 6;
+			};
+
 			sleep 3;
 			_veh enableDynamicSimulation false;
 			_veh enableSimulationGlobal true;
 			
-			private _vName = vehicleVarName _veh;
-			private _vDir = getDir _veh;
-			private _vPos = getPos _veh; 
-			private _vType = typeOf _veh; 
-			private _vPylon = GetPylonMagazines _veh;
-			private _vAnim = animationNames _veh;
+			
 			private _vAnimArr = [];
 
 			{ _phase = _veh animationPhase _x; _vAnimArr pushBack [_x,_phase]; } foreach _vAnim;
@@ -324,7 +340,7 @@
 				_veh = createVehicle [ _vType, [0,0,(100 + random 700)], [], 0, "none" ];
 				_veh allowDamage false;_veh setDamage 0;
 				_veh setDir _vDir;
-				_veh setPos [ ( _vPos # 0 ), ( _vPos # 1 ), 0 ];
+				_veh setPos _vPos;
 				
 				if (_vName != "") then { missionNamespace setVariable [_vName, _veh]; publicVariable _vName; };
 				

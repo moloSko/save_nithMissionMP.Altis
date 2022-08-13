@@ -50,7 +50,7 @@
 
 // ТАЙМЕРЫ
 	TIME_RESPVEH = 5;		// Время (с) респавн техники
-	TIME_CLEAN = 60;		// Время (м) след. очистки
+	TIME_CLEAN = 3;		// Время (м) след. очистки
 	TIME_CYP4 = 100;		// Сколько часов нужно налетать(ЦУП) для 4 допуска 
 	TIME_BTV4 = 50;			// Сколько часов нужно наездить(БТВ) для 4 допуска 
 	TIME_MRK = 10;			// Интервал для точки f4
@@ -321,4 +321,4 @@
 	VEH_ALL = VEH_TP + (VEH_TYPE # 0) + (VEH_TYPE # 1) + (VEH_TYPE # 2) + (VEH_TYPE # 3) + (VEH_TYPE # 4) + (VEH_TYPE # 5) + (VEH_TYPE # 6) + (VEH_TYPE # 7) + (VEH_TYPE # 8) + VEH_CSAT_GROUZ + VEH_MODULE;
 	
 	VEH_NOTRESP = (VEH_TYPE # 8) + (VEH_LAND_ACCESS # 0) + (VEH_LAND_ACCESS # 1) + (VEH_LAND_ACCESS # 2) + (VEH_LAND_ACCESS # 3) + (VEH_AIR_ACCESS # 0) + (VEH_AIR_ACCESS # 1) + (VEH_AIR_ACCESS # 2) + (VEH_AIR_ACCESS # 3);
-
+	

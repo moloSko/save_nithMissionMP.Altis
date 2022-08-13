@@ -12,8 +12,34 @@
 		// Init.sqf
 		case "InitZeus" : { { _x addEventHandler ["CuratorObjectPlaced", { params ["_curator", "_entity"]; if !(_entity isKindOf "Man") then { ["SetTexture",[_entity]] call F_fnc_Veh; ["LoadBK",[_entity]] call F_fnc_Veh; /*{[_x,1] call FNC_fnc_Unit_Skill;} forEach (crew _entity)*/ }else{ /*[_entity,1] call FNC_fnc_Unit_Skill;*/ }; }]; } forEach allCurators; };
 		case "InitTimeFast" : { if (isServer) then { private _dayK = 1; private _nightK = 2; while {true} do { if ((dayTime >= 4 && dayTime <= 5) || (dayTime >= 19 && dayTime <= 20)) then { setTimeMultiplier _dayK; } else { if (dayTime > 20 || dayTime < 4) then { setTimeMultiplier _nightK;} else { setTimeMultiplier _dayK; }; };sleep 10; }; };};
-		case "InitClean" : { if (isServer)then{ while {true} do { if(["CheckAPIB"] call F_fnc_S)then { {if (isNil {_x getVariable "DRM"} && !(_x inArea "CSAT_BASE") && !(_x inArea "CSAT_PIRS"))then{ deleteVehicle _x; }; } forEach (["GetObj"] call F_fnc_S); Sleep (TIME_CLEAN * 60); }else{ Sleep 60; };};}; };
-		case "InitCleanBase" : { if (isServer)then{ while {true} do { {if (isNil {_x getVariable "DRM"} && ((_x inArea "CSAT_BASE") || (_x inArea "CSAT_PIRS")))then{ deleteVehicle _x; }; } forEach (["GetObj"] call F_fnc_S); Sleep (TIME_CLEAN * 60);};}; };
+		case "InitClean" : { 
+			if (isServer)then{ 
+				while {true} do { 
+					if(true/* ["CheckAPIB"] call F_fnc_S */)then { 
+						{
+							if (isNil {_x getVariable "DRM"} && !(_x inArea "CSAT_BASE") && !(_x inArea "CSAT_PIRS"))then{ 
+								deleteVehicle _x; 
+							}; 
+						} forEach (["GetObj"] call F_fnc_S); 
+						Sleep (TIME_CLEAN * 60); 
+						}else{ 
+							Sleep 60; 
+						};
+					};
+				}; 
+			};
+		case "InitCleanBase" : { 
+			if (isServer)then{ 
+				while {true} do { 
+					{
+						if (isNil {_x getVariable "DRM"} && ((_x inArea "CSAT_BASE") || (_x inArea "CSAT_PIRS")))then{ 
+							deleteVehicle _x; 
+						}; 
+					} forEach (["GetObj"] call F_fnc_S); 
+					Sleep (TIME_CLEAN * 60);
+				};
+			}; 
+		};
 		case "InitMarkers" : { private _marker1 = createMarker ["Markers1", [14240,28800]]; _marker1 setMarkerType "mil_box"; _marker1 setMarkerText format[" DISCORD:        %1",TEXT_DC]; private _marker2 = createMarker ["Markers2", [14240,28500]]; _marker2 setMarkerType "mil_box"; _marker2 setMarkerText format[" VK GROUP:      %1",TEXT_VK]; private _marker3 = createMarker ["Markers3", [14240,28200]]; _marker3 setMarkerType "mil_triangle"; _marker3 setMarkerText format[" IP SERVER:         %1",TEXT_IP]; _marker3 setMarkerColor "ColorBlue"; };
 		case "InitWeather" : { private _Time = [6,8,10,12,14,16,18,20]; _Time = _Time call BIS_fnc_arrayShuffle; _Time = selectRandom _Time; skipTime ((_Time - dayTime + 24) % 24); private _nm = [0.05,0.1,0.15,0.2,0.25,0.3]; _nm = _nm call BIS_fnc_arrayShuffle; _set = selectRandom _nm; 15 setWindStr _set; _set = selectRandom _nm; 15 setWindForce _set; _set = selectRandom _nm; 15 setWindDir _set; _set = selectRandom _nm; 15 setWaves _set; _set = selectRandom _nm; 15 setRainbow _set; _set = selectRandom _nm; 15 setRain _set; _set = selectRandom _nm; 0 setFog 0; forceWeatherChange; };
 		case "InitOptions" : { {missionNamespace setVariable [_x # 0, _x # 1,true];} forEach OPTIONS; };
@@ -89,9 +115,20 @@
 		case "CheckSeat" : { player addEventHandler ["GetInMan", { params ["_player","_role","_vehicle"]; if ((_role == "driver") || (_role == "gunner") || (_role == "commander")) exitWith { ["CheckSeat2"] call F_fnc_S; }; }]; player addEventHandler ["SeatSwitchedMan", { _role = assignedVehicleRole player; if (("driver" in _role) || ("turret" in _role) || ("turret path" in _role)) exitWith { ["CheckSeat2"] call F_fnc_S; }; }]; player addEventHandler ["GetOutMan", { ["InitTimeInVeh"] call F_fnc_S; }]; };
 		case "CheckSeat2" : { private _vehicle = vehicle player; private _type = typeOf _vehicle; private _pLvl = player getVariable ["pLvl",-1]; private _Slot = player getVariable ["Slot","Rifleman"]; private _pPanels = player getVariable "pPanels"; private _pCYP = _pPanels # 4 # 0; private _pBTV = _pPanels # 4 # 1; if(_vehicle == CSAT_CAR_SHTAB && !(_Slot in SLOTS_N))exitWith{systemChat "Только для штабников!";moveOut player;}; if (_pLvl <= 0) exitWith {systemChat "Место не доступно Новобранцам!";moveOut player;}; for "_i" from 0 to (count _pCYP) do { if(_type in (VEH_AIR_ACCESS # _i)) exitWith { if(_Slot != "CYP") exitWith { systemChat "Вы не на слоте пилота!"; moveOut player; }; if ((_pCYP # _i) == 0) exitWith { systemChat format["%1: нет допуска!",PDATA_TEXT # 4 # 4 # 0 # _i]; moveOut player; }; ["InitTimeInVeh",["CYP"]] spawn F_fnc_S; }; }; for "_i" from 0 to (count _pBTV) do { if(_type in (VEH_LAND_ACCESS # _i)) exitWith { if(_Slot != "BTV") exitWith { systemChat "Вы не на слоте танкиста!"; moveOut player; };  if ((_pBTV # _i) == 0) exitWith { systemChat format["%1: нет допуска!",PDATA_TEXT # 4 # 4 # 1 # _i]; moveOut player; }; ["InitTimeInVeh",["BTV"]] spawn F_fnc_S; }; }; private _pHours = player getVariable "pHours"; if(_type in ([VEH_CSAT # 15 # 1] + [VEH_NATO # 17 # 1] + [VEH_NATO # 17 # 2]) && (_pHours # 1) < (60*TIME_CYP4))exitWith{ systemChat format["Вы налетали %1 из %2 часов!",floor ((_pHours # 1)/60),TIME_CYP4]; moveOut player; }; if(_type in (VEH_CSAT # 8 + VEH_NATO # 8) && (_pHours # 2) < (60*TIME_BTV4))exitWith{ systemChat format["Вы наездили %1 из %2 часов!",floor ((_pHours # 2)/60),TIME_BTV4]; moveOut player; }; };
 		case "CheckNick" : { forceUnicode 0; if((player getVariable "pHours") # 0 < 20)exitWith{}; { if(name player regexFind [_x] isNotEqualTo [])exitWith{ player setVariable ["CHECKSLOTNOT",true]; player enableSimulation false; "intro" cutText ["Твой позывной (ник) не подходит для игры на нашем сервере\n\nПоменяй его пожалуйста и возвращайся!", "BLACK", 0.001]; }; }forEach BADNICK; };
-		case "CheckAPIB" : { private _CP = playableUnits inAreaArray "CSAT_BASE"; if((count playableUnits) == (count _CP))then{_ret = true;}else{_ret = false;}; };
+		case "CheckAPIB" : { 
+			private _CP = playableUnits inAreaArray "CSAT_BASE"; 
+			if((count playableUnits) == (count _CP))then{
+				_ret = true;
+			}else{
+				_ret = false;
+			}; 
+		};
 	// GET
-		case "GetObj" : { private _obj = (allMissionObjects "WeaponHolder")+(allMissionObjects "GroundWeaponHolder")+(allMissionObjects "WeaponHolderSimulated")+(allMissionObjects "#crater")+(allDead); _obj = _obj + (vehicles select { (damage _x > 0.1 || {!canMove _x}) && {(count (crew _x)) isEqualTo 0}}); _ret = (_obj - MyAllVehicle); };
+		case "GetObj" : { 
+			private _obj = (allMissionObjects "WeaponHolder")+(allMissionObjects "GroundWeaponHolder")+(allMissionObjects "WeaponHolderSimulated")+(allMissionObjects "#crater")+(allDead); 
+			_obj = _obj + (vehicles select { (damage _x > 0.8 || {!canMove _x}) && {(count (crew _x)) isEqualTo 0}}); 
+			_ret = (_obj - MyAllVehicle); 
+		};
 		case "GetDate" : { private _DT = (systemTime apply {if (_x < 10) then {"0" + str _x} else {str _x}}); _ret = format["%1-%2-%3 %4.%5.%6",_DT # 0,_DT # 1,_DT # 2,_DT # 3,_DT # 4,_DT # 5]; };
 		case "GetFaction" : { private _unit = _params param [0, objNull];if(_unit == objNull)exitWith{}; if((faction _unit) in UNITS_HATO) then {_ret = "NATO"}; if((faction _unit) in UNITS_CSAT) then {_ret = "CSAT"}; if((faction _unit) in UNITS_IND) then {_ret = "IND"}; if((faction _unit) in UNITS_CIV) then {_ret = "CIV"};};
 		case "GetPrc" : { private _player = _params param [0, objNull];if(_player == objNull)exitWith{}; private _pLvl = _player getVariable ["pLvl",-1]; private _pExp = _player getVariable ["pExp",0]; if(_pLvl <= 0) exitWith {_ret = 0;}; if(_pLvl == 20) exitWith { _ret = 100; }; private _NeedExp = iLVL # (_pLvl + 1) # 2; _ret = floor (_pExp / _NeedExp * 100); };
