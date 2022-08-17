@@ -1,0 +1,3 @@
+#include "defines.h"
+
+private "_saveData"; params [["_control",controlNull,[controlNull]],["_index",-1,[0]]];  if(EQUAL(_index,-1) OR isNull _control) exitWith {}; _saveData = GVAR_PNS format["view_slot_%1",_index]; if(isNil "_saveData") exitWith {};  CONTROL(MENU_IDD,SLOT_NAME) ctrlSetText (SEL(_saveData,0)); SVAR_MNS ["view_foot",SEL(_saveData,1)]; SVAR_MNS ["view_car",SEL(_saveData,2)]; SVAR_MNS ["view_air",SEL(_saveData,3)]; SVAR_MNS ["view_drone",SEL(_saveData,4)]; SVAR_MNS ["view_object",SEL(_saveData,5)]; SVAR_MNS ["view_syncObject",SEL(_saveData,6)]; [] call VIEW_fnc_updateViewDistance; [] call VIEW_fnc_openMenu;
