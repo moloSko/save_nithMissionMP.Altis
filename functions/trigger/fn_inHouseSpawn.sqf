@@ -1,3 +1,12 @@
+
+	/*
+		Название: «Спавн Зоны Боевых Действий»
+		Авторы: Rurix & Warsom
+		Авторское право: (c) 2022 «Девятка»
+		Данный скрипт был разработан, написан, протестирован специально для проекта-сервера «Девятка». Любое копирование и использование скрипта без согласия авторов запрещено!
+		https://discord.gg/GPfv3qAQFX 
+	*/
+
 _units = ["B_Soldier_TL_F", "B_Medic_F", "B_Soldier_TL_F", "B_HeavyGunner_F", "B_Soldier_AT_F", "B_soldier_TL_F", "B_soldier_AAR_F"];    // Массив пехов
 _civs = ["C_man_1_2_F", "C_man_polo_1_F", "C_man_polo_4_F", "C_man_polo_6_F", "C_man_polo_5_F", "C_man_p_fugitive_F", "C_man_w_worker_F"];    // Массив гражданских
 _trgPos = _this # 0;     // Позиция триггера
@@ -13,6 +22,7 @@ switch (_triggerClass) do {
 
 _pos = [];
 _houses = nearestObjects [[_trgPos # 0, _trgPos # 1], ["House"], 300];
+if (count _houses <= 0) exitWith {};
 {
     _c = 0;
     while {(format ["%1",_x buildingPos _c] != "[0,0,0]") && (_c < 2)} do {
@@ -28,13 +38,11 @@ while {_unitsCount < _housesCount} do   // Проверка на кол-во з�
 {
     _house = selectRandom _pos;      // Выбираем рандомный дом
     _pos deleteAt (_pos find _house);
-    //_unit = selectRandom _units;    // Рандомно выбираем юнита из массива
     _unit = _grp createUnit [(selectRandom _units), _house # 1, [], 0, "CAN_COLLIDE"];
     //_unit = _unit setPos (selectRandom _house);     // Ставим пеха в рандомную доступную позицию внутри дома
     _unit disableAI "PATH";     // Вырубаем логику выбора пути
     _unit setUnitPos selectRandom ["UP","UP","MIDDLE"];     // Выбираем позицию пеха в пространстве (2 к 3 положение стоя, 1 к 3 сидя)
-    // подумать, нужен ли этот хандлер
-    //_unit addEventHandler["Fired",{params ["_unit"];_unit enableAI "PATH";_unit setUnitPos "AUTO";_unit removeEventHandler ["Fired",_thisEventHandler];}];    
+	[ _unit, random [0.65, 0.85, 1] ] call trg_fnc_setSkill;	// Задаем скилл
     _unitsCount = _unitsCount + 1;
 };
 

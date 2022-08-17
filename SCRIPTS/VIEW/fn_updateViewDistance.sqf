@@ -1,3 +1,0 @@
-#include "defines.h"
-
-private "_dist"; switch (true) do { case (!(EQUAL(SEL(UAVControl getConnectedUAV player,1),""))): { setViewDistance view_drone; _dist = view_drone; };  case ((vehicle player) isKindOf "Man"): { setViewDistance view_foot; _dist = view_foot; };  case ((vehicle player) isKindOf "LandVehicle"): { setViewDistance view_car; _dist = view_car; };  case ((vehicle player) isKindOf "Air"): { setViewDistance view_air; _dist = view_air; }; case default { setViewDistance view_foot; _dist = view_foot; }; };  if(view_syncObject) then { if (_dist > 5000) then { _dist = 5000; }; setObjectViewDistance [_dist,100]; view_object = _dist; };

@@ -1,6 +1,15 @@
-/*
-        УСТАНОВКА СКИЛА БОТУ
-*/
+
+	/*
+		Название: «Спавн Зоны Боевых Действий»
+		Авторы: Rurix & Warsom
+		Авторское право: (c) 2022 «Девятка»
+		Данный скрипт был разработан, написан, протестирован специально для проекта-сервера «Девятка». Любое копирование и использование скрипта без согласия авторов запрещено!
+		https://discord.gg/GPfv3qAQFX 
+	*/
+
+	/*
+		УСТАНОВКА СКИЛА БОТУ
+	*/
 
     private _unit = _this # 0;
     private _type = _this # 1;
@@ -27,15 +36,15 @@
         _General = _type;        // Общее
     };
 
+    _unit setskill ["general",_General];
     _unit setskill ["aimingspeed",_AimSpeed];
     _unit setskill ["aimingaccuracy",_AimAcc];
     _unit setskill ["aimingshake",_AimShake];
-    _unit setskill ["spotdistance",_SpotDist];
-    _unit setskill ["spottime",_SpotTime];
+    _unit setskill ["spotdistance",0.8];
+    _unit setskill ["spottime",0.8];
     _unit setskill ["commanding",_Commanding];
     _unit setskill ["courage",_Courage];
     _unit setskill ["reloadSpeed",_ReloadSpeed];
-    _unit setskill ["general",_General];
 
     _unit setCombatMode "RED";
     _unit setUnitCombatMode "RED";

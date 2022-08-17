@@ -1,3 +1,12 @@
+
+	/*
+		Название: «Спавн Зоны Боевых Действий»
+		Авторы: Rurix & Warsom
+		Авторское право: (c) 2022 «Девятка»
+		Данный скрипт был разработан, написан, протестирован специально для проекта-сервера «Девятка». Любое копирование и использование скрипта без согласия авторов запрещено!
+		https://discord.gg/GPfv3qAQFX 
+	*/
+
 _trgPos = _this # 0;
 _type = [ "B_Heli_Light_01_armed_F", "B_Heli_Attack_01_F", "B_Heli_Transport_01_camo_F", "B_Plane_CAS_01_F", "B_Plane_Fighter_01_F" ];
 _pos = [];
@@ -10,7 +19,7 @@ for [{ _i = 0 }, { _i < 2 }, { _i = _i + 1 }] do
 		_cosX = cos _rndDir * 5000;
 		_sinY = sin _rndDir * 5000;
 		_pos = [_cosX, _sinY, 500] vectorAdd _trgPos;
-		if !( _pos inArea "CSAT_BASE" ) then 
+		if !( _pos inArea "CSAT_SAFE_BASE" ) then 
 		{
 			sleep 5;
 			break;
@@ -30,7 +39,7 @@ for [{ _i = 0 }, { _i < 2 }, { _i = _i + 1 }] do
 
 			_wp = (_veh # 2) addWaypoint [_wppos, 0, _i];
 			_wp setWaypointType "SAD";
-			_wp setWaypointBehaviour "AWARE";
+			_wp setWaypointBehaviour "COMBAT";
 			_wp setWaypointCombatMode "RED";
 			_wp setWaypointCompletionRadius 50;
 		};
@@ -67,7 +76,7 @@ for [{ _i = 0 }, { _i < 2 }, { _i = _i + 1 }] do
 
 			_wp = (_veh # 2) addWaypoint [_wppos, 0, _i];
 			_wp setWaypointType "SAD";
-			_wp setWaypointBehaviour "AWARE";
+			_wp setWaypointBehaviour "COMBAT";
 			_wp setWaypointCombatMode "RED";
 			_wp setWaypointCompletionRadius 50;
 		};

@@ -1,3 +1,12 @@
+
+	/*
+		Название: «Спавн Зоны Боевых Действий»
+		Авторы: Rurix & Warsom
+		Авторское право: (c) 2022 «Девятка»
+		Данный скрипт был разработан, написан, протестирован специально для проекта-сервера «Девятка». Любое копирование и использование скрипта без согласия авторов запрещено!
+		https://discord.gg/GPfv3qAQFX 
+	*/
+
 _trgPos = _this # 0;	// Параметр позиции триггера
 _trgParams = _this # 1;		// Параметры триггера
 _triggerClass = _this # 2;		// Класс триггера
@@ -10,9 +19,14 @@ switch (_triggerClass) do {
 	case 2: { _grpCount = 12; };
 };
 
-_types = [(configfile >> "CfgGroups" >> "West" >> "BLU_CTRG_F" >> "Infantry" >> "CTRG_InfSquad"),
-(configfile >> "CfgGroups" >> "West" >> "BLU_CTRG_F" >> "Infantry" >> "CTRG_InfTeam")
-]; 		// Массив групп для спавна, поменять
+_types = [
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "BUS_InfTeam_AA"),
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "BUS_InfAssault"),
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "BUS_InfSquad_Weapons"),
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "BUS_InfSquad"),
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "BUS_InfTeam_AT"),
+(configfile >> "CfgGroups" >> "West" >> "BLU_F" >> "Infantry" >> "B_InfTeam_Light")
+]; 		// Массив групп для спавна
 
 _i = 0;		// Счётчик
 while { _i < _grpCount } do 	// Выполняется пока не заспавнит нужное кол-во групп

@@ -1,53 +1,87 @@
 
-	/*
-		#1: ИНИЦИАЛИЗАЦИЯ. ЗАПУСК МИССИИ
+	/* 
+		#1 ВЫПОЛНЯЕТСЯ СЕРВЕРОМ, ПРИ ЗАПУСКЕ МИССИИ
 	*/
-	
-	#include "VAR\Var.sqf"
-	
-	west setFriend [resistance, 0];							// HATO vs IND
-	if(isServer)then{setDate [1992,7,22,0,0];};				// Установить дату
-	
-	['LoadLVL'] remoteExec ["HP_fnc_ToQu",2];				// Загрузка званий
-	['LoadSlots'] remoteExec ["HP_fnc_ToQu",2];				// Загрузка слотов
-	
-	[] call F_fnc_Init;										// Запуск основных функций
-	
-	["InitZeus"] call F_fnc_S;								// Запуск зевсов
-	["InitTimeFast"] spawn F_fnc_S;							// Запуск ускоренного время ночью
-	["InitClean"] spawn F_fnc_S;							// Запуск очистки вне базы =HC (Просчет обьектов)
-	["InitCleanBase"] spawn F_fnc_S;						// Запуск очистки базы =HC (Просчет обьектов)
-	["InitMarkers"] call F_fnc_S;							// Запуск маркеров-информации на карте
-	["InitWeather"] call F_fnc_S;							// Запуск погоды
-	["InitOptions"] call F_fnc_S;							// Запуск настроек усложнений
-	["InitCreateChannel"] call F_fnc_S;						// Запуск создания каналов
-	
+
+	enableSaving[false,false];
+	disableRemoteSensors true;
+
+
+
+	V3D = true;
+
+// Тектсуры
 	if (isServer)then{
-		// Запуск триггера
-		if(PointSelectionMethod == 0) then {
-			[] spawn srv_fnc_createPoint;
-		} else {
-		if(!_NoPoints) then {[] spawn srv_fnc_createPoint};
-		};
-		sleep 1;
-		switch AirPatrol do {
-			case 1:{};
-			case 2:{[selectRandom EnemyAir,2] spawn srv_fnc_enemyairCycle};
-			case 3:{[selectRandom EnemyHelli,3] spawn srv_fnc_enemyairCycle};
-			case 4:{
-				if((random 10)>5) then {
-					[selectRandom EnemyAir,2] spawn srv_fnc_enemyairCycle;
-				} else {
-					[selectRandom EnemyHelli,3] spawn srv_fnc_enemyairCycle;
-				};
-			};
-		};
+		CSAT_B_START setObjectTextureGlobal [0, "texture\CSAT\B_Welcome.paa"];	// WELCOME
+		CSAT_B_AFK setObjectTextureGlobal [0, "texture\CSAT\B_AFK.paa"];		// AFK
+		CSAT_B_ARS setObjectTextureGlobal [0, "texture\CSAT\B_ARS.paa"];		// Экран в арсенале
+		CSAT_B_HELISTART setObjectTextureGlobal [0, "texture\logo.paa"];		// Текстура прилета
+		CSAT_B_LOGO_1 setObjectTextureGlobal [0, "texture\logo.paa"];		// ЛОГО
+		CSAT_B_LOGO_2 setObjectTextureGlobal [0, "texture\logo.paa"];		// ЛОГО
 	};
+
+
+	if (isServer)then{
+		#include "Functions\sVAR.sqf"
+		#include "Functions\sFNC.sqf"
+		MyAllVehicle = [];
+		{
+			if((typeOf _x) in VEH_TP)then{[_x] call fnc_VEH_SetTexture;};
+			if((typeOf _x) in VEH_ALL && !((typeOf _x) in VEH_TP) && _x != StartHeli)then{
+				[_x] call fnc_VEH_Init;
+			}else{MyAllVehicle pushBack _x;};
+		} foreach vehicles;
 	
-// Проверка открытия и закрытия арсенала	
-	[missionNamespace, "arsenalOpened", {disableSerialization; _display = _this # 0; _display displayAddEventHandler ["KeyDown", "if ((_this # 1) in [19,24,29,31,46,47]) then {true}"]; {( _display displayCtrl _x ) ctrlSetText ""; ( _display displayCtrl _x ) ctrlRemoveAllEventHandlers "buttonclick"; ( _display displayCtrl _x ) ctrlSetTooltip ""; } forEach [44150, 44148, 44149]; }] call BIS_fnc_addScriptedEventHandler;
-	[missionNamespace, "arsenalClosed", {[] call A_fnc_Check; }] call BIS_fnc_addScriptedEventHandler;
+		[] spawn {while {true} do { { _x addCuratorEditableObjects [allUnits, true]; _x addCuratorEditableObjects [vehicles-MyAllVehicle, true]; } forEach allCurators;Sleep 10; };};
 
+		triggers = [ 
+		["Селакано",[20785.9,6712.67,0],[300, 300, 0],0], 
+		["Ферес",[21678.6,7569.89,0],[300, 300, 0],0], 
+		["Панагия",[20450.2,8887.12,0],[310, 310, 0],0], 
+		["Экали",[17059.7,9992.37,0],[300, 300, 0],0], 
+		["Халкея",[20194.6,11660.7,0],[300, 300, 0],0], 
+		["Пиргос",[16820.6,12697.5,0],[350, 530, 0],1], 
+		["Дорида",[19400.9,13300.3,0],[300, 300, 0],0], 
+		["Харкия",[18114.1,15222.8,0], [540, 420, 0],2], 
+		["Нифи",[19441.1,15378.7,0],[300, 300, 0],0], 
+		["Калохори",[21369,16356,0],[300, 300, 0],0], 
+		["Парос",[20947.6,16971.8,0],[360, 400, 0],1], 
+		["Иоаннина",[23199.7,19984.6, 0],[300, 300, 0],0], 
+		["Дельфинаки",[23932.2,20169.4,0],[300, 300, 0],0], 
+		["София",[25680.5,21365.1,0],[400, 400, 0],1], 
+		["Аликампос",[11112.6,14573.7,0],[300, 300, 0],0], 
+		["Тополия",[7390.81,15400.5,0],[300, 300, 0],0], 
+		["Коре",[7095.42,16450.1,0],[300, 300, 0],0], 
+		["Каталаки",[11745.1,13699.1,0],[300, 300, 0],0], 
+		["Кавала",[3568.95,12940.4,0],[400, 320, 80],1], 
+		["Аггелохори",[3795.78,13706.1,0],[300, 320, 0],1], 
+		["Териса",[10618.9,12237.3,0],[300, 300, 0],0], 
+		["Негадес",[4885.98,16171.3,0],[390, 350, 0],1], 
+		["Полиакко",[10966.5,13435.3,0],[300, 300, 0],0], 
+		["Лакка",[12402,15702.3,0],[300, 300, 0],0], 
+		["Нери",[4116.11,11706.1,0],[350, 350, 0],0], 
+		["Ставрос",[12950.1,15041.6,0],[300, 300, 0],0], 
+		["Абдера",[9425.42,20284,0],[300, 300, 0],0], 
+		["Фрини",[14612.5,20786.7,0],[300, 300, 0],0], 
+		["Зарос",[9200.81,11900.9,0],[350, 550, -45],2], 
+		["Неохори",[12502,14387,0],[300, 400, 70],1], 
+		["Корони",[11786.7,18302.4,0],[300, 300, 0],0], 
+		["Айос-Дионисиос",[9357.95,15887.8,0],[450, 300, -20],1], 
+		["Айя-Триада",[16668.5,20477,0],[300, 300, 0],0], 
+		["Панохори",[5083.31,11245.2,0],[350, 350, 0],1], 
+		["Айос-Константинос",[3988.77,17407.8,0],[300, 350, -25],1], 
+		["Орино",[10440.4,17273.1,0],[300, 300, 0],0], 
+		["Ифестиона",[12837,19679.3,0],[300, 300, 0],0], 
+		["Галати",[10330.3,19086,0],[350, 350, 0],1], 
+		["Ореокастро",[4600.45,21430.6,0],[300, 300, 0],0], 
+		["Калитея",[17906.5,18129.4,0],[300, 300, 0],0], 
+		["Айос-Петрос",[19319.4,17641.6,0],[300, 300, 0],0], 
+		["Сирта",[8625.13,18301.6,0],[300, 300, 0],0], 
+		["Атира",[14053,18739.4,0],[300, 450, 45],1], 
+		["Молос",[27043.9,23170.7,-18.0848],[300, 350, 45],0],
+		["Родополи",[18833.4,16597.1,0],[350, 350, 0],0]];
+		onTrigger = 0;publicVariable "onTrigger";
+		[] spawn trg_fnc_spawnTrigger;
+	};
 
-
-
+	

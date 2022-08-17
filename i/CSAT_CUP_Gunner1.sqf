@@ -1,0 +1,14 @@
+	_uniform = _uniform + [];
+	_vest = _vest + [];
+	_backpack = _backpack + [];
+	_headgear = _headgear + [];
+	_items = _items + [];
+	_optics = _optics + [];
+	_handgunWeapon = _handgunWeapon + [];
+	_secondaryWeapon = _secondaryWeapon + [];
+	_primaryWeapon = _primaryWeapon + ["CUP_arifle_RPK74","CUP_arifle_RPK74_top_rail","CUP_arifle_RPK74_45","CUP_arifle_RPK74_45_top_rail","CUP_arifle_RPK74M","CUP_arifle_RPK74M_top_rail","CUP_arifle_RPK74M_railed","CUP_arifle_RPK74M_1p78","CUP_lmg_PKM","CUP_lmg_PKMN","CUP_lmg_Pecheneg","CUP_lmg_PKM_top_rail","CUP_lmg_PKM_B50_vfg","CUP_lmg_PKM_front_rail_B50_vfg","CUP_lmg_PKM_top_rail_B50_vfg","CUP_lmg_Pecheneg_top_rail","CUP_lmg_Pecheneg_B50_vfg","CUP_lmg_Pecheneg_top_rail_B50_vfg","CUP_lmg_Pecheneg_desert","CUP_lmg_Pecheneg_woodland","CUP_lmg_Pecheneg_PScope"];
+	_muzzles = _muzzles + [];
+	_pointers = _pointers + [];
+	_bipods = _bipods + [];
+	_googles = _googles + [];
+	_magazines = _magazines + [];
